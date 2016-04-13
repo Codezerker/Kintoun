@@ -31,6 +31,20 @@ enum AriaClientNotificationKey: String {
     case Disconnected = "AriaClientDisconnected"
 }
 
+
+extension NSDictionary {
+    func jsonString() -> String? {
+        do {
+            let data = try NSJSONSerialization.dataWithJSONObject(self, options: [])
+            return String.init(data: data, encoding: NSUTF8StringEncoding)
+        } catch _ {
+            return nil
+        }
+    }
+}
+
+
+
 public class AriaClient: NSObject {
     
     private var url: String?
@@ -73,13 +87,9 @@ public class AriaClient: NSObject {
 extension AriaClient {
     
     public func getGlobalStat() {
-        let jsonDict = ["jsonrpc": "2.0", "method": "aria2.getGlobalStat", "id": ""]
-        do {
-            let data = try NSJSONSerialization.dataWithJSONObject(jsonDict, options: [])
-            let message = String.init(data: data, encoding: NSUTF8StringEncoding)
+        let jsonDict = ["jsonrpc": "2.0", "method": "aria2.getGlobalStat", "id": ""] as NSDictionary
+        if let message = jsonDict.jsonString() {
             self.websocket.send(message)
-        } catch _ {
-            
         }
     }
 }
