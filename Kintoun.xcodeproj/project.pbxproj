@@ -1,0 +1,351 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		88313F021CBB43BE00218B29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88313F011CBB43BE00218B29 /* AppDelegate.swift */; };
+		88313F041CBB43BE00218B29 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88313F031CBB43BE00218B29 /* MainViewController.swift */; };
+		88313F061CBB43BE00218B29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88313F051CBB43BE00218B29 /* Assets.xcassets */; };
+		88313F091CBB43BE00218B29 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88313F071CBB43BE00218B29 /* Main.storyboard */; };
+		88313F121CBB67C500218B29 /* SwiftWebSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88313F111CBB67C500218B29 /* SwiftWebSocket.framework */; };
+		88313F161CBB694800218B29 /* SwiftWebSocket.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 88313F111CBB67C500218B29 /* SwiftWebSocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		88313F1C1CBB77FF00218B29 /* AriaClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88313F1B1CBB77FF00218B29 /* AriaClient.swift */; };
+		88313F441CBD1A7000218B29 /* AriaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88313F431CBD1A7000218B29 /* AriaManager.swift */; };
+		88313F491CBD1EC600218B29 /* aria2c in Resources */ = {isa = PBXBuildFile; fileRef = 88313F481CBD1EC600218B29 /* aria2c */; };
+		88313F4B1CBE65EF00218B29 /* AriaClientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88313F4A1CBE65EF00218B29 /* AriaClientModel.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		88313F151CBB693D00218B29 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				88313F161CBB694800218B29 /* SwiftWebSocket.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		88313EFE1CBB43BE00218B29 /* Kintoun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kintoun.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		88313F011CBB43BE00218B29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		88313F031CBB43BE00218B29 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		88313F051CBB43BE00218B29 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		88313F081CBB43BE00218B29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		88313F0A1CBB43BE00218B29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		88313F111CBB67C500218B29 /* SwiftWebSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftWebSocket.framework; path = Carthage/Build/Mac/SwiftWebSocket.framework; sourceTree = SOURCE_ROOT; };
+		88313F1B1CBB77FF00218B29 /* AriaClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AriaClient.swift; sourceTree = "<group>"; };
+		88313F431CBD1A7000218B29 /* AriaManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AriaManager.swift; sourceTree = "<group>"; };
+		88313F481CBD1EC600218B29 /* aria2c */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = aria2c; sourceTree = "<group>"; };
+		88313F4A1CBE65EF00218B29 /* AriaClientModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AriaClientModel.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		88313EFB1CBB43BE00218B29 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				88313F121CBB67C500218B29 /* SwiftWebSocket.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		88313EF51CBB43BE00218B29 = {
+			isa = PBXGroup;
+			children = (
+				88313F001CBB43BE00218B29 /* Kintoun */,
+				88313F101CBB673400218B29 /* Frameworks */,
+				88313EFF1CBB43BE00218B29 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		88313EFF1CBB43BE00218B29 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				88313EFE1CBB43BE00218B29 /* Kintoun.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		88313F001CBB43BE00218B29 /* Kintoun */ = {
+			isa = PBXGroup;
+			children = (
+				88313F1A1CBB77F200218B29 /* AriaRPC */,
+				88313F011CBB43BE00218B29 /* AppDelegate.swift */,
+				88313F031CBB43BE00218B29 /* MainViewController.swift */,
+				88313F051CBB43BE00218B29 /* Assets.xcassets */,
+				88313F071CBB43BE00218B29 /* Main.storyboard */,
+				88313F0A1CBB43BE00218B29 /* Info.plist */,
+			);
+			path = Kintoun;
+			sourceTree = "<group>";
+		};
+		88313F101CBB673400218B29 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				88313F111CBB67C500218B29 /* SwiftWebSocket.framework */,
+			);
+			name = Frameworks;
+			path = Kintoun;
+			sourceTree = "<group>";
+		};
+		88313F1A1CBB77F200218B29 /* AriaRPC */ = {
+			isa = PBXGroup;
+			children = (
+				88313F471CBD1EC600218B29 /* bin */,
+				88313F431CBD1A7000218B29 /* AriaManager.swift */,
+				88313F1B1CBB77FF00218B29 /* AriaClient.swift */,
+				88313F4A1CBE65EF00218B29 /* AriaClientModel.swift */,
+			);
+			path = AriaRPC;
+			sourceTree = "<group>";
+		};
+		88313F471CBD1EC600218B29 /* bin */ = {
+			isa = PBXGroup;
+			children = (
+				88313F481CBD1EC600218B29 /* aria2c */,
+			);
+			path = bin;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		88313EFD1CBB43BE00218B29 /* Kintoun */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 88313F0D1CBB43BE00218B29 /* Build configuration list for PBXNativeTarget "Kintoun" */;
+			buildPhases = (
+				88313EFA1CBB43BE00218B29 /* Sources */,
+				88313EFB1CBB43BE00218B29 /* Frameworks */,
+				88313F151CBB693D00218B29 /* Copy Frameworks */,
+				88313EFC1CBB43BE00218B29 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Kintoun;
+			productName = Kintoun;
+			productReference = 88313EFE1CBB43BE00218B29 /* Kintoun.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		88313EF61CBB43BE00218B29 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = CodeZerker;
+				TargetAttributes = {
+					88313EFD1CBB43BE00218B29 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = 88313EF91CBB43BE00218B29 /* Build configuration list for PBXProject "Kintoun" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 88313EF51CBB43BE00218B29;
+			productRefGroup = 88313EFF1CBB43BE00218B29 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				88313EFD1CBB43BE00218B29 /* Kintoun */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		88313EFC1CBB43BE00218B29 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				88313F061CBB43BE00218B29 /* Assets.xcassets in Resources */,
+				88313F091CBB43BE00218B29 /* Main.storyboard in Resources */,
+				88313F491CBD1EC600218B29 /* aria2c in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		88313EFA1CBB43BE00218B29 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				88313F441CBD1A7000218B29 /* AriaManager.swift in Sources */,
+				88313F041CBB43BE00218B29 /* MainViewController.swift in Sources */,
+				88313F1C1CBB77FF00218B29 /* AriaClient.swift in Sources */,
+				88313F021CBB43BE00218B29 /* AppDelegate.swift in Sources */,
+				88313F4B1CBE65EF00218B29 /* AriaClientModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		88313F071CBB43BE00218B29 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				88313F081CBB43BE00218B29 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		88313F0B1CBB43BE00218B29 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		88313F0C1CBB43BE00218B29 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		88313F0E1CBB43BE00218B29 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = Kintoun/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = software.codezerker.Kintoun;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		88313F0F1CBB43BE00218B29 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = Kintoun/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = software.codezerker.Kintoun;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		88313EF91CBB43BE00218B29 /* Build configuration list for PBXProject "Kintoun" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				88313F0B1CBB43BE00218B29 /* Debug */,
+				88313F0C1CBB43BE00218B29 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		88313F0D1CBB43BE00218B29 /* Build configuration list for PBXNativeTarget "Kintoun" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				88313F0E1CBB43BE00218B29 /* Debug */,
+				88313F0F1CBB43BE00218B29 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 88313EF61CBB43BE00218B29 /* Project object */;
+}
