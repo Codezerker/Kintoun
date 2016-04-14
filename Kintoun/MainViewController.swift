@@ -14,9 +14,9 @@ class MainViewController: NSViewController {
         super.viewDidLoad()
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didConnectNotification), name: AriaClientNotificationKey.Connected.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(globalStatChanged), name: AriaClientNotificationKey.GlobalStatChanged.rawValue, object: nil)
         
         ariaManager.setup()
-
     }
 
     override var representedObject: AnyObject? {
@@ -28,7 +28,9 @@ class MainViewController: NSViewController {
     
     func didConnectNotification() {
         
-        ariaManager.client.getGlobalStat()
+    }
+    
+    func globalStatChanged() {
         
     }
 }

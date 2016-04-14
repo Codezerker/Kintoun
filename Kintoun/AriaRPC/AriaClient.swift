@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftWebSocket
+import SwiftyJSON
 
 //private enum AriaMethods: String {
 //    case AddUri         = "aria2.addUri"
@@ -29,26 +30,15 @@ import SwiftWebSocket
 enum AriaClientNotificationKey: String {
     case Connected = "AriaClientConnected"
     case Disconnected = "AriaClientDisconnected"
+    case GlobalStatChanged = "AriaClientGlobalStatChanged"
 }
-
-
-extension NSDictionary {
-    func jsonString() -> String? {
-        do {
-            let data = try NSJSONSerialization.dataWithJSONObject(self, options: [])
-            return String.init(data: data, encoding: NSUTF8StringEncoding)
-        } catch _ {
-            return nil
-        }
-    }
-}
-
-
 
 public class AriaClient: NSObject {
     
     private var url: String?
     private var websocket: WebSocket!
+    
+    public var globalStat = GlobalStat.init()
     
     public init(_ url: String) {
         self.url = url
@@ -79,7 +69,23 @@ public class AriaClient: NSObject {
     }
     
     private func handleMessage(message: String) {
-        print(message)
+        
+        if let data = message.dataUsingEncoding(NSUTF8StringEncoding) {
+            let json = JSON(data)
+            guard let id = json["id"].string  else {
+                print("No Message ID")
+                return
+            }
+            
+            switch id {
+            case "aria2.getGlobalStat":
+                handleGlobalStat(json)
+                break
+            default:
+                break
+            }
+        }
+        
     }
 }
 
@@ -87,9 +93,27 @@ public class AriaClient: NSObject {
 extension AriaClient {
     
     public func getGlobalStat() {
-        let jsonDict = ["jsonrpc": "2.0", "method": "aria2.getGlobalStat", "id": ""] as NSDictionary
-        if let message = jsonDict.jsonString() {
+        let jsonDict = ["jsonrpc"   : "2.0",
+                        "method"    : "aria2.getGlobalStat",
+                        "id"        : "aria2.getGlobalStat"]
+        
+        if let message = JSON(jsonDict).string {
             self.websocket.send(message)
         }
+    }
+}
+
+
+// callback
+extension AriaClient {
+    
+    private func handleGlobalStat(json: JSON) {
+        let newGlobalStat = GlobalStat.init(json)
+        if globalStat != newGlobalStat {
+            globalStat = newGlobalStat
+            NSNotificationCenter.defaultCenter().postNotificationName(AriaClientNotificationKey.GlobalStatChanged.rawValue, object: nil)
+        }
+        
+        
     }
 }
