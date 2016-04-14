@@ -17,6 +17,8 @@
 		88313F441CBD1A7000218B29 /* AriaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88313F431CBD1A7000218B29 /* AriaManager.swift */; };
 		88313F491CBD1EC600218B29 /* aria2c in Resources */ = {isa = PBXBuildFile; fileRef = 88313F481CBD1EC600218B29 /* aria2c */; };
 		88313F4B1CBE65EF00218B29 /* AriaClientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88313F4A1CBE65EF00218B29 /* AriaClientModel.swift */; };
+		88313F4D1CBFA8C900218B29 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88313F4C1CBFA8C900218B29 /* SwiftyJSON.framework */; };
+		88313F4E1CBFB0F200218B29 /* SwiftyJSON.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 88313F4C1CBFA8C900218B29 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,6 +29,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				88313F161CBB694800218B29 /* SwiftWebSocket.framework in Copy Frameworks */,
+				88313F4E1CBFB0F200218B29 /* SwiftyJSON.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -45,6 +48,7 @@
 		88313F431CBD1A7000218B29 /* AriaManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AriaManager.swift; sourceTree = "<group>"; };
 		88313F481CBD1EC600218B29 /* aria2c */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = aria2c; sourceTree = "<group>"; };
 		88313F4A1CBE65EF00218B29 /* AriaClientModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AriaClientModel.swift; sourceTree = "<group>"; };
+		88313F4C1CBFA8C900218B29 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/Mac/SwiftyJSON.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88313F4D1CBFA8C900218B29 /* SwiftyJSON.framework in Frameworks */,
 				88313F121CBB67C500218B29 /* SwiftWebSocket.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,6 +97,7 @@
 		88313F101CBB673400218B29 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				88313F4C1CBFA8C900218B29 /* SwiftyJSON.framework */,
 				88313F111CBB67C500218B29 /* SwiftWebSocket.framework */,
 			);
 			name = Frameworks;

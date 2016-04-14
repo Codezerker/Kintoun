@@ -1,2 +1,2 @@
 github "tidwall/SwiftWebSocket" 
-github "daltoniam/Starscream"
+github "SwiftyJSON/SwiftyJSON"
