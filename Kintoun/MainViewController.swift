@@ -27,7 +27,9 @@ class MainViewController: NSViewController {
     
     
     func didConnectNotification() {
+        print("connected!")
         
+        ariaManager.client.getGlobalStat()
     }
     
     func globalStatChanged() {

@@ -9,6 +9,12 @@
 import Foundation
 import SwiftyJSON
 
+enum Result<T> {
+    case Success(T)
+    case Error(ErrorType)
+}
+
+
 public struct GlobalStat : Equatable {
     var downloadSpeed: Int
     var uploadSpeed: Int

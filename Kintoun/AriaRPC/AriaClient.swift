@@ -33,10 +33,36 @@ enum AriaClientNotificationKey: String {
     case GlobalStatChanged = "AriaClientGlobalStatChanged"
 }
 
+
+private struct Request {
+    var id: String
+    var method: String
+    var params: Dictionary<String, AnyObject>?
+    var handleResponse: (Result<JSON>)->Void
+    var jsonString: String
+    
+    init(method: String, params: [String:AnyObject]? = nil, handleResponse: (Result<JSON>)->Void) {
+        self.id = method
+        self.method = method
+        self.params = params
+        self.handleResponse = handleResponse
+
+        var jsonDict: [String: AnyObject] = ["jsonrpc": "2.0", "method": method, "id": id]
+        if let params = params {
+            jsonDict["params"] = params
+        }
+        
+        self.jsonString = "\(JSON(jsonDict))"
+
+    }
+}
+
+
 public class AriaClient: NSObject {
     
     private var url: String?
     private var websocket: WebSocket!
+    private var requestDict = [String: Request]()
     
     public var globalStat = GlobalStat.init()
     
@@ -64,28 +90,23 @@ public class AriaClient: NSObject {
         }
         
         self.websocket.event.message = { message in
-            self.handleMessage(message as! String)
-        }
-    }
-    
-    private func handleMessage(message: String) {
-        
-        if let data = message.dataUsingEncoding(NSUTF8StringEncoding) {
-            let json = JSON(data)
-            guard let id = json["id"].string  else {
-                print("No Message ID")
+            
+            print(message)
+            
+            let json = JSON.parse(message as! String)
+            
+            guard let id = json["id"].string, request = self.requestDict[id]  else {
+                print("No Related Reuqest found for this message")
                 return
             }
             
-            switch id {
-            case "aria2.getGlobalStat":
-                handleGlobalStat(json)
-                break
-            default:
-                break
-            }
+            request.handleResponse(.Success(json))
+            self.requestDict.removeValueForKey(id)
         }
-        
+    }
+    
+    private func send(request: Request) {
+        self.websocket.send(request.jsonString)
     }
 }
 
@@ -93,27 +114,31 @@ public class AriaClient: NSObject {
 extension AriaClient {
     
     public func getGlobalStat() {
-        let jsonDict = ["jsonrpc"   : "2.0",
-                        "method"    : "aria2.getGlobalStat",
-                        "id"        : "aria2.getGlobalStat"]
-        
-        if let message = JSON(jsonDict).string {
-            self.websocket.send(message)
+        let request = Request.init(method: "aria2.getGlobalStatd") { (result) in
+            switch result {
+            case let .Success(json):
+                // TODO: parse json
+                print(json)
+                break
+            case let .Error(error):
+                print(error)
+                // TODO error
+                break
+            }
         }
+        
+        send(request)
     }
-}
-
-
-// callback
-extension AriaClient {
     
-    private func handleGlobalStat(json: JSON) {
-        let newGlobalStat = GlobalStat.init(json)
-        if globalStat != newGlobalStat {
-            globalStat = newGlobalStat
-            NSNotificationCenter.defaultCenter().postNotificationName(AriaClientNotificationKey.GlobalStatChanged.rawValue, object: nil)
+    
+    public func addUri(uri: [String], completion: ()->Void) {
+        let request = Request.init(method: "aria2.addUri", params: ["uri": uri]) { (message) in
+            print(message)
         }
         
-        
+        send(request)
     }
+    
 }
+
+
