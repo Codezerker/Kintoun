@@ -29,7 +29,18 @@ class MainViewController: NSViewController {
     func didConnectNotification() {
         print("connected!")
         
-        ariaManager.client.getGlobalStat()
+        ariaManager.client.getGlobalStat() { (result) in
+            switch result {
+            case let .Success(stat):
+                print("get global stat: + \(stat)")
+                break
+            case let .Error(error):
+                print(error)
+                break
+            }
+        }
+        
+        
     }
     
     func globalStatChanged() {

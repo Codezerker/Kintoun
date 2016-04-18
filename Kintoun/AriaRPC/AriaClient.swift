@@ -135,17 +135,25 @@ public class AriaClient: NSObject {
     }
 }
 
+
 // Aria2 methods
 extension AriaClient {
     
-    public func getGlobalStat() {
+    public func getGlobalStat(completion: (Result<GlobalStat>) -> Void) {
         self.generateRequest("aria2.getGlobalStatd") { (json) in
-            
+            if json["result"] == nil {
+                // FIXME: error
+                let error = NSError.init(domain: "kintoun", code: 0, userInfo: nil)
+                completion(.Error(error))
+            } else {
+                let stat = GlobalStat.init(json["result"])
+                completion(.Success(stat))
+            }
         }.send()
     }
     
     
-    public func addUri(uri: [String], completion: (Result<String>)->Void) {
+    public func addUri(uri: [String], completion: (Result<String>) -> Void) {
         self.generateRequest("aria2.addUri") { (json) in
             
         }.send()
