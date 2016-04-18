@@ -38,22 +38,42 @@ private struct Request {
     var id: String
     var method: String
     var params: Dictionary<String, AnyObject>?
-    var handleResponse: (Result<JSON>)->Void
-    var jsonString: String
+    var handleResponse: (JSON) -> Void
+    var client: AriaClient?
     
-    init(method: String, params: [String:AnyObject]? = nil, handleResponse: (Result<JSON>)->Void) {
+    init(method: String,
+         params: [String:AnyObject]? = nil,
+         handleResponse: (JSON) -> Void, client: AriaClient? = nil) {
         self.id = method
         self.method = method
         self.params = params
         self.handleResponse = handleResponse
-
+        self.client = client
+    }
+    
+    func send() {
+        guard let client = self.client,
+            websocket = client.websocket else {
+            return
+        }
+        
         var jsonDict: [String: AnyObject] = ["jsonrpc": "2.0", "method": method, "id": id]
         if let params = params {
+            // add secret key
+//            if let secret = client.secret {
+//                jsonDict["secret"] = secret
+//            }
+            
             jsonDict["params"] = params
         }
         
-        self.jsonString = "\(JSON(jsonDict))"
-
+        let jsonString = "\(JSON(jsonDict))"
+        
+        // for debug
+        print("sending request: " + jsonString)
+        
+        websocket.send(jsonString)
+        client.requestDict[id] = self
     }
 }
 
@@ -61,8 +81,9 @@ private struct Request {
 public class AriaClient: NSObject {
     
     private var url: String?
-    private var websocket: WebSocket!
+    private var websocket: WebSocket?
     private var requestDict = [String: Request]()
+    private var secret: String?
     
     public var globalStat = GlobalStat.init()
     
@@ -77,19 +98,19 @@ public class AriaClient: NSObject {
         }
         
         self.websocket = WebSocket.init(url)
-        self.websocket.event.open = {
+        self.websocket?.event.open = {
             NSNotificationCenter.defaultCenter().postNotificationName(AriaClientNotificationKey.Connected.rawValue, object: nil)
         }
         
-        self.websocket.event.close = {code, reason, wasClean in
+        self.websocket?.event.close = {code, reason, wasClean in
             NSNotificationCenter.defaultCenter().postNotificationName(AriaClientNotificationKey.Disconnected.rawValue, object: nil)
         }
         
-        self.websocket.event.error = { error in
+        self.websocket?.event.error = { error in
             print(error)
         }
         
-        self.websocket.event.message = { message in
+        self.websocket?.event.message = { message in
             
             print(message)
             
@@ -100,13 +121,17 @@ public class AriaClient: NSObject {
                 return
             }
             
-            request.handleResponse(.Success(json))
+            request.handleResponse(json)
             self.requestDict.removeValueForKey(id)
         }
     }
     
-    private func send(request: Request) {
-        self.websocket.send(request.jsonString)
+    private func generateRequest(method: String,
+                                 params: [String:AnyObject]? = nil,
+                                 handleResponse: (JSON) -> Void) -> Request {
+        let request = Request.init(method: method, params: params, handleResponse: handleResponse, client: self)
+        
+        return request
     }
 }
 
@@ -114,29 +139,16 @@ public class AriaClient: NSObject {
 extension AriaClient {
     
     public func getGlobalStat() {
-        let request = Request.init(method: "aria2.getGlobalStatd") { (result) in
-            switch result {
-            case let .Success(json):
-                // TODO: parse json
-                print(json)
-                break
-            case let .Error(error):
-                print(error)
-                // TODO error
-                break
-            }
-        }
-        
-        send(request)
+        self.generateRequest("aria2.getGlobalStatd") { (json) in
+            
+        }.send()
     }
     
     
-    public func addUri(uri: [String], completion: ()->Void) {
-        let request = Request.init(method: "aria2.addUri", params: ["uri": uri]) { (message) in
-            print(message)
-        }
-        
-        send(request)
+    public func addUri(uri: [String], completion: (Result<String>)->Void) {
+        self.generateRequest("aria2.addUri") { (json) in
+            
+        }.send()
     }
     
 }

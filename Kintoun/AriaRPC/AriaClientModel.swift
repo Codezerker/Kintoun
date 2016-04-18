@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-enum Result<T> {
+public enum Result<T> {
     case Success(T)
     case Error(ErrorType)
 }
