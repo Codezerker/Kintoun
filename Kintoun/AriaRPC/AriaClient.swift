@@ -91,6 +91,7 @@ public class AriaClient: NSObject {
         self.url = url
     }
     
+    
     public func connect() {
         
         guard let url = url else {
@@ -126,6 +127,7 @@ public class AriaClient: NSObject {
         }
     }
     
+    
     private func generateRequest(method: String,
                                  params: [String:AnyObject]? = nil,
                                  handleResponse: (JSON) -> Void) -> Request {
@@ -135,6 +137,12 @@ public class AriaClient: NSObject {
     }
 }
 
+extension NSError {
+    private convenience init(domain: String, json: JSON) {
+        let code = json["code"].int ?? 0
+        self.init(domain: "client.aria.kintoun", code: code, userInfo: json.dictionaryObject)
+    }
+}
 
 // Aria2 methods
 extension AriaClient {
@@ -142,8 +150,7 @@ extension AriaClient {
     public func getGlobalStat(completion: (Result<GlobalStat>) -> Void) {
         self.generateRequest("aria2.getGlobalStatd") { (json) in
             if json["result"] == nil {
-                // FIXME: error
-                let error = NSError.init(domain: "kintoun", code: 0, userInfo: nil)
+                let error = NSError.init(domain: "getGlobalStat.ariaClient.Kintoun", json: json["error"])
                 completion(.Error(error))
             } else {
                 let stat = GlobalStat.init(json["result"])
@@ -155,7 +162,13 @@ extension AriaClient {
     
     public func addUri(uri: [String], completion: (Result<String>) -> Void) {
         self.generateRequest("aria2.addUri") { (json) in
-            
+            guard let gid = json["result"].string else {
+                let error = NSError.init(domain: "addUri.ariaClient.Kintoun", json: json["error"])
+                completion(.Error(error))
+                return
+            }
+
+            completion(.Success(gid))
         }.send()
     }
     
