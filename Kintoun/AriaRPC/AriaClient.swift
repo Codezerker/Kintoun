@@ -37,14 +37,15 @@ enum AriaClientNotificationKey: String {
 private struct Request {
     var id: String
     var method: String
-    var params: Dictionary<String, AnyObject>?
+    var params: [AnyObject]?
     var handleResponse: (JSON) -> Void
     var client: AriaClient?
     
     init(method: String,
-         params: [String:AnyObject]? = nil,
+         params: [AnyObject]? = nil,
          handleResponse: (JSON) -> Void, client: AriaClient? = nil) {
-        self.id = method
+        
+        self.id = method + "\(Int(NSDate.init().timeIntervalSince1970))"
         self.method = method
         self.params = params
         self.handleResponse = handleResponse
@@ -129,11 +130,9 @@ public class AriaClient: NSObject {
     
     
     private func generateRequest(method: String,
-                                 params: [String:AnyObject]? = nil,
+                                 params: [AnyObject]? = nil,
                                  handleResponse: (JSON) -> Void) -> Request {
-        let request = Request.init(method: method, params: params, handleResponse: handleResponse, client: self)
-        
-        return request
+        return Request.init(method: method, params: params, handleResponse: handleResponse, client: self)
     }
 }
 
@@ -160,8 +159,8 @@ extension AriaClient {
     }
     
     
-    public func addUri(uri: [String], completion: (Result<String>) -> Void) {
-        self.generateRequest("aria2.addUri") { (json) in
+    public func addUri(uris: [String], completion: (Result<String>) -> Void) {
+        self.generateRequest("aria2.addUri", params: [uris]) { (json) in
             guard let gid = json["result"].string else {
                 let error = NSError.init(domain: "addUri.ariaClient.Kintoun", json: json["error"])
                 completion(.Error(error))
