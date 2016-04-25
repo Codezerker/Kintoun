@@ -19,6 +19,7 @@
 		88313F4B1CBE65EF00218B29 /* AriaClientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88313F4A1CBE65EF00218B29 /* AriaClientModel.swift */; };
 		88313F4D1CBFA8C900218B29 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88313F4C1CBFA8C900218B29 /* SwiftyJSON.framework */; };
 		88313F4E1CBFB0F200218B29 /* SwiftyJSON.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 88313F4C1CBFA8C900218B29 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		88313F781CCDAADF00218B29 /* AriaClientOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88313F771CCDAADF00218B29 /* AriaClientOption.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,6 +50,7 @@
 		88313F481CBD1EC600218B29 /* aria2c */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = aria2c; sourceTree = "<group>"; };
 		88313F4A1CBE65EF00218B29 /* AriaClientModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AriaClientModel.swift; sourceTree = "<group>"; };
 		88313F4C1CBFA8C900218B29 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/Mac/SwiftyJSON.framework; sourceTree = SOURCE_ROOT; };
+		88313F771CCDAADF00218B29 /* AriaClientOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AriaClientOption.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 				88313F431CBD1A7000218B29 /* AriaManager.swift */,
 				88313F1B1CBB77FF00218B29 /* AriaClient.swift */,
 				88313F4A1CBE65EF00218B29 /* AriaClientModel.swift */,
+				88313F771CCDAADF00218B29 /* AriaClientOption.swift */,
 			);
 			path = AriaRPC;
 			sourceTree = "<group>";
@@ -195,6 +198,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88313F781CCDAADF00218B29 /* AriaClientOption.swift in Sources */,
 				88313F441CBD1A7000218B29 /* AriaManager.swift in Sources */,
 				88313F041CBB43BE00218B29 /* MainViewController.swift in Sources */,
 				88313F1C1CBB77FF00218B29 /* AriaClient.swift in Sources */,

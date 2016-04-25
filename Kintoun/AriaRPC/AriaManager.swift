@@ -40,9 +40,13 @@ public class AriaManager: NSObject {
             serverTask.launchPath = path
             serverTask.arguments = ["--enable-rpc", "--rpc-listen-all"]
             serverTask.launch()
+            
+            // temporary solution
+            sleep(1)
         }
         
         print(server.path())
+        
         client = AriaClient.init(server.path())
         client.connect()
     }
