@@ -27,10 +27,10 @@ import SwiftyJSON
 //    case GetFiles       = "aria2.getFiles"
 //}
 
-enum AriaClientNotificationKey: String {
-    case Connected = "AriaClientConnected"
-    case Disconnected = "AriaClientDisconnected"
-    case GlobalStatChanged = "AriaClientGlobalStatChanged"
+public struct AriaClientNotificationKey {
+    static let Connected = "AriaClientConnected"
+    static let Disconnected = "AriaClientDisconnected"
+    static let GlobalStatChanged = "AriaClientGlobalStatChanged"
 }
 
 
@@ -74,12 +74,12 @@ public class AriaClient: NSObject {
         
         self.websocket = WebSocket.init(url)
         self.websocket?.event.open = {
-            NSNotificationCenter.defaultCenter().postNotificationName(AriaClientNotificationKey.Connected.rawValue, object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(AriaClientNotificationKey.Connected, object: nil)
             print("Open...")
         }
         
         self.websocket?.event.close = {code, reason, wasClean in
-            NSNotificationCenter.defaultCenter().postNotificationName(AriaClientNotificationKey.Disconnected.rawValue, object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(AriaClientNotificationKey.Disconnected, object: nil)
             print("Close...")
         }
         
