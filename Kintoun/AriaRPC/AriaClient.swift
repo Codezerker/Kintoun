@@ -31,6 +31,9 @@ public struct AriaClientNotificationKey {
     static let Connected = "AriaClientConnected"
     static let Disconnected = "AriaClientDisconnected"
     static let GlobalStatChanged = "AriaClientGlobalStatChanged"
+    
+    static let DownloadStart = "AriaClientDownloadStart"
+    static let DownloadComplete = "AriaClientDownloadComplete"
 }
 
 
@@ -92,6 +95,22 @@ public class AriaClient: NSObject {
             print(message)
             
             let json = JSON.parse(message as! String)
+            
+            // handle notification from aria server
+            if let method = json["method"].string {
+                switch method {
+                case "aria2.onDownloadStart":
+                    let params = json["params"].array?.first?.dictionaryObject
+                    NSNotificationCenter.defaultCenter().postNotificationName(AriaClientNotificationKey.DownloadStart, object: nil, userInfo: params)
+                    return
+                case "aria2.onDownloadComplete":
+                    let params = json["params"].array?.first?.dictionaryObject
+                    NSNotificationCenter.defaultCenter().postNotificationName(AriaClientNotificationKey.DownloadComplete, object: nil, userInfo: params)
+                    return
+                default:
+                    break
+                }
+            }
             
             guard let id = json["id"].string, request = self.requestDict[id]  else {
                 print("No Related Reuqest found for this message")
