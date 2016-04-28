@@ -15,6 +15,66 @@ public enum Result<T> {
 }
 
 
+public struct AriaClientTask {
+    enum TaskStatus: String {
+        case Active     = "active"
+        case Waiting    = "waiting"
+        case Paused     = "paused"
+        case Error      = "error"
+        case Complete   = "complete"
+        case Removed    = "removed"
+    }
+    
+    let gid: String
+    let status: TaskStatus
+    let totalLength: UInt64
+    let completedLength: UInt64
+    let uploadLength: UInt64
+    let downloadSpeed: UInt64
+    let uploadSpeed: UInt64
+    let errorCode: Int?
+    let errorMessage: String?
+    let dir: String?
+
+    init(gid: String, status: TaskStatus) {
+        self.gid = gid
+        self.status = status
+        self.totalLength = 0
+        self.completedLength = 0
+        self.uploadLength = 0
+        self.downloadSpeed = 0
+        self.uploadSpeed = 0
+        self.errorCode = nil
+        self.errorMessage = nil
+        self.dir = nil
+    }
+    
+    init?(json: JSON) {
+        guard let gid = json["gid"].string,
+            statusRaw = json["status"].string,
+               status = TaskStatus.init(rawValue: statusRaw) else {
+            return nil
+        }
+        
+        self.gid = gid
+        self.status = status
+        self.totalLength = json["totalLength"].uInt64Value
+        self.completedLength = json["completedLength"].uInt64Value
+        self.uploadLength = json["uploadLength"].uInt64Value
+        self.uploadSpeed = json["uploadSpeed"].uInt64Value
+        self.downloadSpeed = json["downloadSpeed"].uInt64Value
+        self.errorCode = json["errorCode"].int
+        self.errorMessage = json["errorMessage"].string
+        self.dir = json["dir"].string
+    }
+    
+    // files
+    // bitfield, infoHash, numSeeders, seeder, piceLength, numPieces
+    // connections, followedBy, following, belongsTo
+}
+
+
+
 public struct GlobalStat : Equatable {
     var downloadSpeed: Int
     var uploadSpeed: Int

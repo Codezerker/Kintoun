@@ -169,7 +169,6 @@ extension NSError {
 // Aria2 methods
 extension AriaClient {
     
-    // stat
     public func getGlobalStat(completion: (Result<GlobalStat>) -> Void) {
         let request = self.generateRequest("aria2.getGlobalStatd") { (json) in
             if json["result"] == nil {
@@ -185,15 +184,38 @@ extension AriaClient {
     }
     
     
-    // settings
+    public func tellActive(completion:(Result<Array<AriaClientTask>>) -> Void) {
+        let request = self.generateRequest("aria2.tellActive") { (json) in
+            guard let array = json["result"].array else {
+                let error = NSError.init(domain: "getGlobalStat.ariaClient.Kintoun", json: json["error"])
+                completion(.Error(error))
+                return
+            }
+
+            var tasks = [AriaClientTask]()
+            for taskJSON in array {
+                if let task = AriaClientTask.init(json: taskJSON) {
+                    tasks.append(task)
+                } else {
+                    let error = NSError.init(domain: "getGlobalStat.ariaClient.Kintoun", json: nil)
+                    completion(.Error(error))
+                    return
+                }
+            }
+            completion(.Success(tasks))
+        }
+        
+        self.send(request)
+    }
+    
+    
     public func getGlobalSettings() {
         let request = self.generateRequest("aria2.getGlobalOption") { (json) in
             if json["result"] == nil {
-//                print(error)
-//                let error = NSError.init(domain: "getGlobalStat.ariaClient.Kintoun", json: json["error"])
-//                completion(.Error(error))
+                print(json["error"])
+                // TODO: return error
             } else {
-//                print()
+                print(json["result"])
             }
         }
         
@@ -201,7 +223,6 @@ extension AriaClient {
     }
     
     
-    // task methods
     public func addUri(uris: [String], options:[String: AnyObject]? = nil, completion: (Result<String>) -> Void) {
         // merge global options
         var combinedOptions = globalOptions
@@ -222,6 +243,8 @@ extension AriaClient {
         
         self.send(request)
     }
+    
+    
     
 }
 

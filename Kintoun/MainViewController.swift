@@ -25,7 +25,7 @@ class MainViewController: NSViewController {
         
         ariaManager.setup()
         
-
+        
     }
 
     override var representedObject: AnyObject? {
@@ -57,6 +57,9 @@ class MainViewController: NSViewController {
     }
     
     @IBAction func saveTo(sender: AnyObject) {
+        ariaManager.client.tellActive { (result) in
+            
+        }
 //        let panel = NSOpenPanel.init(contentRect: NSMakeRect(0, 0, 500, 400), styleMask: 0, backing: .Retained, defer: false)
 //        panel.canChooseFiles = false
 //        panel.canChooseDirectories = true
@@ -74,10 +77,8 @@ class MainViewController: NSViewController {
             switch result {
             case let .Error(error):
                 print(error)
-                break
             case let .Success(value):
                 print(value)
-                break
             }
         }
     }
