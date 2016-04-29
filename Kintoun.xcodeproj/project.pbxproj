@@ -20,6 +20,9 @@
 		88313F4D1CBFA8C900218B29 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88313F4C1CBFA8C900218B29 /* SwiftyJSON.framework */; };
 		88313F4E1CBFB0F200218B29 /* SwiftyJSON.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 88313F4C1CBFA8C900218B29 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		88313F781CCDAADF00218B29 /* AriaClientOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88313F771CCDAADF00218B29 /* AriaClientOption.swift */; };
+		88313FF01CD2315200218B29 /* RootWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88313FEF1CD2315200218B29 /* RootWindowController.swift */; };
+		88313FF81CD3867F00218B29 /* NewTaskPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88313FF71CD3867F00218B29 /* NewTaskPanel.swift */; };
+		883140121CD38C0A00218B29 /* NewTaskView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 883140111CD38C0A00218B29 /* NewTaskView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -51,6 +54,9 @@
 		88313F4A1CBE65EF00218B29 /* AriaClientModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AriaClientModel.swift; sourceTree = "<group>"; };
 		88313F4C1CBFA8C900218B29 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/Mac/SwiftyJSON.framework; sourceTree = SOURCE_ROOT; };
 		88313F771CCDAADF00218B29 /* AriaClientOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AriaClientOption.swift; sourceTree = "<group>"; };
+		88313FEF1CD2315200218B29 /* RootWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootWindowController.swift; sourceTree = "<group>"; };
+		88313FF71CD3867F00218B29 /* NewTaskPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTaskPanel.swift; sourceTree = "<group>"; };
+		883140111CD38C0A00218B29 /* NewTaskView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewTaskView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +94,9 @@
 			children = (
 				88313F1A1CBB77F200218B29 /* AriaRPC */,
 				88313F011CBB43BE00218B29 /* AppDelegate.swift */,
+				88313FEF1CD2315200218B29 /* RootWindowController.swift */,
+				88313FF71CD3867F00218B29 /* NewTaskPanel.swift */,
+				883140111CD38C0A00218B29 /* NewTaskView.xib */,
 				88313F031CBB43BE00218B29 /* MainViewController.swift */,
 				88313F051CBB43BE00218B29 /* Assets.xcassets */,
 				88313F071CBB43BE00218B29 /* Main.storyboard */,
@@ -186,6 +195,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88313F061CBB43BE00218B29 /* Assets.xcassets in Resources */,
+				883140121CD38C0A00218B29 /* NewTaskView.xib in Resources */,
 				88313F091CBB43BE00218B29 /* Main.storyboard in Resources */,
 				88313F491CBD1EC600218B29 /* aria2c in Resources */,
 			);
@@ -200,10 +210,12 @@
 			files = (
 				88313F781CCDAADF00218B29 /* AriaClientOption.swift in Sources */,
 				88313F441CBD1A7000218B29 /* AriaManager.swift in Sources */,
+				88313FF81CD3867F00218B29 /* NewTaskPanel.swift in Sources */,
 				88313F041CBB43BE00218B29 /* MainViewController.swift in Sources */,
 				88313F1C1CBB77FF00218B29 /* AriaClient.swift in Sources */,
 				88313F021CBB43BE00218B29 /* AppDelegate.swift in Sources */,
 				88313F4B1CBE65EF00218B29 /* AriaClientModel.swift in Sources */,
+				88313FF01CD2315200218B29 /* RootWindowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

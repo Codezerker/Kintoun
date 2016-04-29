@@ -650,12 +650,41 @@
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
-                <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
+                <windowController id="B8D-0N-5wS" customClass="RootWindowController" customModule="Kintoun" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <toolbar key="toolbar" implicitIdentifier="00C2FB86-0EF7-4DA9-8117-DFACCDDEE644" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="gKr-XW-w0P">
+                            <allowedToolbarItems>
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="Joi-Yx-O73"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="cge-6j-ISo"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="viZ-R8-nR2"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="Bvi-Bk-7qy"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="d92-v3-Gzx"/>
+                                <toolbarItem implicitItemIdentifier="19B0E026-BBD4-470D-9F21-A672568F0A6D" label="New" paletteLabel="New" image="NSAddTemplate" id="zLl-ib-qI0">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="21" height="30"/>
+                                    <size key="maxSize" width="47" height="141"/>
+                                    <button key="view" verticalHuggingPriority="750" id="seC-mx-nfC">
+                                        <rect key="frame" x="0.0" y="14" width="36" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="NSAddTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zIf-y1-BEc">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                    <connections>
+                                        <action selector="createTask:" target="Oky-zY-oP4" id="e4k-Ag-F02"/>
+                                    </connections>
+                                </toolbarItem>
+                            </allowedToolbarItems>
+                            <defaultToolbarItems>
+                                <toolbarItem reference="d92-v3-Gzx"/>
+                                <toolbarItem reference="zLl-ib-qI0"/>
+                            </defaultToolbarItems>
+                        </toolbar>
                     </window>
                     <connections>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
@@ -663,7 +692,7 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="250"/>
+            <point key="canvasLocation" x="75" y="282"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="hIz-AP-VOD">
@@ -672,53 +701,14 @@
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="563" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="diE-aw-QQp">
-                                <rect key="frame" x="20" y="223" width="516" height="22"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="0pz-ol-IpM">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kaa-YM-QgB">
-                                <rect key="frame" x="435" y="178" width="107" height="32"/>
-                                <buttonCell key="cell" type="push" title="Downloads" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UPR-Yx-0kr">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                    <connections>
-                                        <action selector="download:" target="XfG-lQ-9wD" id="Dyp-AB-BkR"/>
-                                    </connections>
-                                </buttonCell>
-                            </button>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a3Y-Nz-d7m">
-                                <rect key="frame" x="108" y="187" width="327" height="19"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="wOe-k8-J2b">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tcm-6l-tpL">
-                                <rect key="frame" x="12" y="180" width="96" height="32"/>
-                                <buttonCell key="cell" type="push" title="Save to:" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="D7F-n8-XRo">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="saveTo:" target="XfG-lQ-9wD" id="tUb-Hv-iM2"/>
-                                </connections>
-                            </button>
-                        </subviews>
                     </view>
-                    <connections>
-                        <outlet property="savePathLabel" destination="a3Y-Nz-d7m" id="hbh-83-j39"/>
-                        <outlet property="urlsTextField" destination="diE-aw-QQp" id="sVz-9x-tAj"/>
-                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75.5" y="634"/>
+            <point key="canvasLocation" x="75.5" y="695"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="NSAddTemplate" width="11" height="11"/>
+    </resources>
 </document>

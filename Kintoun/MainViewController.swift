@@ -10,16 +10,11 @@ import Cocoa
 
 class MainViewController: NSViewController {
 
-    @IBOutlet weak var urlsTextField: NSTextField!
-    @IBOutlet weak var savePathLabel: NSTextField!
-    
     private var downloadFolderPath = NSURL.fileURLWithPath(NSHomeDirectory() + "/Downloads/")
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.savePathLabel.stringValue = downloadFolderPath.path!
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didConnectNotification), name: AriaClientNotificationKey.Connected, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(globalStatChanged), name: AriaClientNotificationKey.GlobalStatChanged, object: nil)
         
@@ -56,29 +51,20 @@ class MainViewController: NSViewController {
         
     }
     
-    @IBAction func saveTo(sender: AnyObject) {
-        ariaManager.client.tellActive { (result) in
-            
-        }
-//        let panel = NSOpenPanel.init(contentRect: NSMakeRect(0, 0, 500, 400), styleMask: 0, backing: .Retained, defer: false)
-//        panel.canChooseFiles = false
-//        panel.canChooseDirectories = true
-//        panel.allowsMultipleSelection = false
-//        panel.beginSheetModalForWindow(self.view.window!) { (result) in
-//            if (result == 1) {
-//                print(panel.URL)
-//            }
-//        }
-    }
     
-    @IBAction func download(sender: AnyObject) {
-        let urls = self.urlsTextField.stringValue.componentsSeparatedByString(",")
-        ariaManager.client.addUri(urls) { (result) in
-            switch result {
-            case let .Error(error):
-                print(error)
-            case let .Success(value):
-                print(value)
+    @IBAction func createTask(sender: AnyObject) {
+        let newTaskPanel = NewTaskPanel.init()
+        newTaskPanel.beginSheetModalForWindow(self.view.window!) { (response) in
+            if response == .OK {
+                let urls = newTaskPanel.urlTextField.stringValue.componentsSeparatedByString(",")
+                ariaManager.client.addUri(urls) { (result) in
+                    switch result {
+                    case let .Error(error):
+                        print(error)
+                    case let .Success(value):
+                        print(value)
+                    }
+                }
             }
         }
     }
