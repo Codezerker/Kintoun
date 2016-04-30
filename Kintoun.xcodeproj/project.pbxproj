@@ -23,6 +23,7 @@
 		88313FF01CD2315200218B29 /* RootWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88313FEF1CD2315200218B29 /* RootWindowController.swift */; };
 		88313FF81CD3867F00218B29 /* NewTaskPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88313FF71CD3867F00218B29 /* NewTaskPanel.swift */; };
 		883140121CD38C0A00218B29 /* NewTaskView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 883140111CD38C0A00218B29 /* NewTaskView.xib */; };
+		883140141CD45E0A00218B29 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883140131CD45E0A00218B29 /* TaskCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -57,6 +58,7 @@
 		88313FEF1CD2315200218B29 /* RootWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootWindowController.swift; sourceTree = "<group>"; };
 		88313FF71CD3867F00218B29 /* NewTaskPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTaskPanel.swift; sourceTree = "<group>"; };
 		883140111CD38C0A00218B29 /* NewTaskView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewTaskView.xib; sourceTree = "<group>"; };
+		883140131CD45E0A00218B29 /* TaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				88313FF71CD3867F00218B29 /* NewTaskPanel.swift */,
 				883140111CD38C0A00218B29 /* NewTaskView.xib */,
 				88313F031CBB43BE00218B29 /* MainViewController.swift */,
+				883140131CD45E0A00218B29 /* TaskCell.swift */,
 				88313F051CBB43BE00218B29 /* Assets.xcassets */,
 				88313F071CBB43BE00218B29 /* Main.storyboard */,
 				88313F0A1CBB43BE00218B29 /* Info.plist */,
@@ -215,6 +218,7 @@
 				88313F1C1CBB77FF00218B29 /* AriaClient.swift in Sources */,
 				88313F021CBB43BE00218B29 /* AppDelegate.swift in Sources */,
 				88313F4B1CBE65EF00218B29 /* AriaClientModel.swift in Sources */,
+				883140141CD45E0A00218B29 /* TaskCell.swift in Sources */,
 				88313FF01CD2315200218B29 /* RootWindowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -10,17 +10,16 @@ import Cocoa
 
 class MainViewController: NSViewController {
 
-    private var downloadFolderPath = NSURL.fileURLWithPath(NSHomeDirectory() + "/Downloads/")
+    private var downloadFolderPath = NSURL.fileURLWithPath(NSHomeDirectory() + "/Downloads")
+    
+    private var tasks = [AriaClientTask]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didConnectNotification), name: AriaClientNotificationKey.Connected, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(globalStatChanged), name: AriaClientNotificationKey.GlobalStatChanged, object: nil)
-        
+       
         ariaManager.setup()
-        
-        
     }
 
     override var representedObject: AnyObject? {
@@ -47,8 +46,18 @@ class MainViewController: NSViewController {
 //        }
     }
     
-    func globalStatChanged() {
-        
+    func getTasks(activeOnly: Bool) {
+        if activeOnly {
+            ariaManager.client.tellActive({ (result) in
+                switch result {
+                case let .Error(error):
+                    print(error)
+                case let .Success(tasks):
+                    self.tasks = tasks
+                    // TODO: reload tableview
+                }
+            })
+        }
     }
     
     
@@ -70,3 +79,29 @@ class MainViewController: NSViewController {
     }
 }
 
+
+extension MainViewController: NSTableViewDelegate, NSTableViewDataSource {
+    
+    func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
+        
+        let cell = tableView.makeViewWithIdentifier("TaskCell", owner: self)
+        
+        
+        return nil
+    }
+    
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+        return tasks.count
+    }
+    
+}
+
+
+
+// MARK - Debug
+extension MainViewController {
+    
+    @IBAction func prinActiveTasks(sender: AnyObject) {
+        self.getTasks(true)
+    }
+}

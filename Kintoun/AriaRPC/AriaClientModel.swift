@@ -16,6 +16,7 @@ public enum Result<T> {
 
 
 public struct AriaClientTask {
+    
     enum TaskStatus: String {
         case Active     = "active"
         case Waiting    = "waiting"
@@ -24,6 +25,23 @@ public struct AriaClientTask {
         case Complete   = "complete"
         case Removed    = "removed"
     }
+    
+    
+    struct AriaClientFile {
+        let index: UInt
+        let length: UInt64
+        let completeLength: UInt64
+        let path: String
+        // selected, uris
+        
+        init(json: JSON) {
+            self.index = json["index"].uIntValue
+            self.path = json["path"].stringValue
+            self.length = json["length"].uInt64Value
+            self.completeLength = json["completeLength"].uInt64Value
+        }
+    }
+    
     
     let gid: String
     let status: TaskStatus
@@ -35,6 +53,7 @@ public struct AriaClientTask {
     let errorCode: Int?
     let errorMessage: String?
     let dir: String?
+    let files: [AriaClientFile]
 
     init(gid: String, status: TaskStatus) {
         self.gid = gid
@@ -47,6 +66,7 @@ public struct AriaClientTask {
         self.errorCode = nil
         self.errorMessage = nil
         self.dir = nil
+        self.files = []
     }
     
     init?(json: JSON) {
@@ -66,6 +86,11 @@ public struct AriaClientTask {
         self.errorCode = json["errorCode"].int
         self.errorMessage = json["errorMessage"].string
         self.dir = json["dir"].string
+
+        self.files = json["files"].array?.map({ (json) -> AriaClientFile in
+            return AriaClientFile.init(json: json)
+        }) ?? []
+        
     }
     
     // files
