@@ -10,14 +10,22 @@ import Cocoa
 
 class MainViewController: NSViewController {
 
+    @IBOutlet weak var taskTableView: NSTableView!
+    
     private var downloadFolderPath = NSURL.fileURLWithPath(NSHomeDirectory() + "/Downloads")
-    
     private var tasks = [AriaClientTask]()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didConnectNotification), name: AriaClientNotificationKey.Connected, object: nil)
+        // adding notification
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ariaClientConnected), name: AriaClientNotificationKey.Connected, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ariaClientDisconnected), name: AriaClientNotificationKey.Disconnected, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ariaClientDownloadStart), name: AriaClientNotificationKey.DownloadStart, object: nil);
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ariaClientDownloadComplete), name: AriaClientNotificationKey.DownloadComplete, object: nil);
        
         ariaManager.setup()
     }
@@ -25,38 +33,6 @@ class MainViewController: NSViewController {
     override var representedObject: AnyObject? {
         didSet {
         // Update the view, if already loaded.
-        }
-    }
-    
-    
-    func didConnectNotification() {
-        print("connected!")
-        
-        ariaManager.client.getGlobalSettings()
-        
-//        ariaManager.client.getGlobalStat() { (result) in
-//            switch result {
-//            case let .Success(stat):
-//                print("get global stat: + \(stat)")
-//                break
-//            case let .Error(error):
-//                print(error)
-//                break
-//            }
-//        }
-    }
-    
-    func getTasks(activeOnly: Bool) {
-        if activeOnly {
-            ariaManager.client.tellActive({ (result) in
-                switch result {
-                case let .Error(error):
-                    print(error)
-                case let .Success(tasks):
-                    self.tasks = tasks
-                    // TODO: reload tableview
-                }
-            })
         }
     }
     
@@ -80,15 +56,59 @@ class MainViewController: NSViewController {
 }
 
 
+
+// MARK: Handle Notification -
+extension MainViewController {
+    
+    func ariaClientConnected() {
+        
+        ariaManager.client.subcribe([.Active, .Waiting, .Stopped]) { (result) in
+            switch result {
+            case let .Error(error):
+                print(error)
+            case let .Success(tasks):
+                // temp solution
+                if self.tasks.count != tasks.count {
+                    self.tasks = tasks
+                    self.taskTableView.reloadData()
+                } else {
+                    var dict = [String: StructWrapper<AriaClientTask>]()
+                    for task in tasks {
+                        dict[task.gid] = StructWrapper.init(theValue: task)
+                    }
+                    NSNotificationCenter.defaultCenter().postNotificationName("TaskCellUpdateNotification", object: nil, userInfo: dict)
+                }
+            }
+        }
+    }
+    
+    func ariaClientDisconnected() {
+        // show error
+    }
+    
+    func ariaClientDownloadStart(notification: NSNotification) {
+        
+    }
+    
+    func ariaClientDownloadComplete(notification: NSNotification) {
+        
+    }
+}
+
+
+// MARK: TableViewDatasource/Delegate -
 extension MainViewController: NSTableViewDelegate, NSTableViewDataSource {
     
-    func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
+   
+    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         
-        let cell = tableView.makeViewWithIdentifier("TaskCell", owner: self)
+        let cell = tableView.makeViewWithIdentifier("TaskCell", owner: self) as! TaskCell
+        cell.gid = tasks[row].gid
+        cell.updateTask(tasks[row])
         
-        
-        return nil
+        return cell
     }
+    
     
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return tasks.count
@@ -98,10 +118,26 @@ extension MainViewController: NSTableViewDelegate, NSTableViewDataSource {
 
 
 
-// MARK - Debug
+// MARK: Debug -
 extension MainViewController {
     
     @IBAction func prinActiveTasks(sender: AnyObject) {
-        self.getTasks(true)
+        ariaManager.client.tellActive({ (result) in
+            switch result {
+            case let .Error(error):
+                print(error)
+            case let .Success(tasks):
+                self.tasks = tasks
+                // TODO: reload tableview
+            }
+        })
+    }
+}
+
+
+class StructWrapper<T> {
+    var wrappedValue: T
+    init(theValue: T) {
+        wrappedValue = theValue
     }
 }

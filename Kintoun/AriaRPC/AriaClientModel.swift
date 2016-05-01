@@ -31,12 +31,12 @@ public struct AriaClientTask {
         let index: UInt
         let length: UInt64
         let completeLength: UInt64
-        let path: String
+        let path: NSURL?
         // selected, uris
         
         init(json: JSON) {
             self.index = json["index"].uIntValue
-            self.path = json["path"].stringValue
+            self.path = NSURL.init(fileURLWithPath: json["path"].stringValue)
             self.length = json["length"].uInt64Value
             self.completeLength = json["completeLength"].uInt64Value
         }
@@ -45,11 +45,11 @@ public struct AriaClientTask {
     
     let gid: String
     let status: TaskStatus
-    let totalLength: UInt64
-    let completedLength: UInt64
-    let uploadLength: UInt64
-    let downloadSpeed: UInt64
-    let uploadSpeed: UInt64
+    let totalLength: Int64
+    let completedLength: Int64
+    let uploadLength: Int64
+    let downloadSpeed: Int64
+    let uploadSpeed: Int64
     let errorCode: Int?
     let errorMessage: String?
     let dir: String?
@@ -78,11 +78,11 @@ public struct AriaClientTask {
         
         self.gid = gid
         self.status = status
-        self.totalLength = json["totalLength"].uInt64Value
-        self.completedLength = json["completedLength"].uInt64Value
-        self.uploadLength = json["uploadLength"].uInt64Value
-        self.uploadSpeed = json["uploadSpeed"].uInt64Value
-        self.downloadSpeed = json["downloadSpeed"].uInt64Value
+        self.totalLength = json["totalLength"].int64Value
+        self.completedLength = json["completedLength"].int64Value
+        self.uploadLength = json["uploadLength"].int64Value
+        self.uploadSpeed = json["uploadSpeed"].int64Value
+        self.downloadSpeed = json["downloadSpeed"].int64Value
         self.errorCode = json["errorCode"].int
         self.errorMessage = json["errorMessage"].string
         self.dir = json["dir"].string

@@ -36,6 +36,12 @@ public struct AriaClientNotificationKey {
     static let DownloadComplete = "AriaClientDownloadComplete"
 }
 
+public enum AriaClientTaskType {
+    case Active
+    case Waiting
+    case Stopped
+}
+
 
 private struct Request {
     var id: String
@@ -157,14 +163,27 @@ public class AriaClient: NSObject {
         websocket.send(jsonString)
         self.requestDict[request.id] = request
     }
-}
 
-extension NSError {
-    private convenience init(domain: String, json: JSON) {
-        let code = json["code"].int ?? 0
-        self.init(domain: "client.aria.kintoun", code: code, userInfo: json.dictionaryObject)
+    
+    public func subcribe(types: [AriaClientTaskType], callback: Result<Array<AriaClientTask>> -> Void) {
+
+        func getTasks() {
+            // TODO: change to multi call
+            tellActive { (result) in
+                callback(result)
+                dispatch_async(dispatch_get_global_queue(0, 0), {
+                    sleep(1)
+                    dispatch_async(dispatch_get_main_queue(), { 
+                        getTasks()
+                    })
+                })
+            }
+        }
+        
+        getTasks()
     }
 }
+
 
 // Aria2 methods
 extension AriaClient {
@@ -184,7 +203,7 @@ extension AriaClient {
     }
     
     
-    public func tellActive(completion:(Result<Array<AriaClientTask>>) -> Void) {
+    public func tellActive(completion: Result<Array<AriaClientTask>> -> Void) {
         let request = self.generateRequest("aria2.tellActive") { (json) in
             guard let array = json["result"].array else {
                 let error = NSError.init(domain: "getGlobalStat.ariaClient.Kintoun", json: json["error"])
@@ -243,9 +262,13 @@ extension AriaClient {
         
         self.send(request)
     }
-    
-    
-    
 }
 
+
+extension NSError {
+    private convenience init(domain: String, json: JSON) {
+        let code = json["code"].int ?? 0
+        self.init(domain: "client.aria.kintoun", code: code, userInfo: json.dictionaryObject)
+    }
+}
 

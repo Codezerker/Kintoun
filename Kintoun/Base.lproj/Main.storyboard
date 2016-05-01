@@ -714,16 +714,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="520" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="52" horizontalPageScroll="10" verticalLineScroll="52" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HhO-UP-6pK">
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="50" horizontalPageScroll="10" verticalLineScroll="50" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HhO-UP-6pK">
                                 <rect key="frame" x="0.0" y="0.0" width="520" height="270"/>
                                 <clipView key="contentView" id="dY6-PT-qBB">
                                     <rect key="frame" x="0.0" y="0.0" width="520" height="270"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="50" rowSizeStyle="automatic" viewBased="YES" id="9ee-fg-Dtq">
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="50" viewBased="YES" id="9ee-fg-Dtq">
                                             <rect key="frame" x="0.0" y="0.0" width="520" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
@@ -741,7 +740,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <customView identifier="TaskCell" id="Vc5-nx-lJh" customClass="TaskCell" customModule="Kintoun" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="1" width="520" height="50"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="517" height="50"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qI1-bN-6SO">
@@ -769,6 +768,10 @@
                                                     </prototypeCellViews>
                                                 </tableColumn>
                                             </tableColumns>
+                                            <connections>
+                                                <outlet property="dataSource" destination="XfG-lQ-9wD" id="3KH-77-N4v"/>
+                                                <outlet property="delegate" destination="XfG-lQ-9wD" id="XED-Tv-X84"/>
+                                            </connections>
                                         </tableView>
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -790,6 +793,9 @@
                             <constraint firstItem="HhO-UP-6pK" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="eJC-HT-3yG"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="taskTableView" destination="9ee-fg-Dtq" id="uun-KE-ZIk"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
