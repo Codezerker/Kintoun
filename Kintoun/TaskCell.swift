@@ -12,6 +12,7 @@ class TaskCell: NSView {
 
     @IBOutlet weak var nameLabel: NSTextField!
     @IBOutlet weak var detailLabel: NSTextField!
+    @IBOutlet weak var iconImageView: NSImageView!
 
     var gid: String?
     
@@ -34,11 +35,24 @@ class TaskCell: NSView {
     }
     
     func updateTask(task: AriaClientTask) {
-        nameLabel.stringValue = task.files[0].path?.lastPathComponent ?? ""
-        
+
         let completeLength = byteCountFormatter.stringFromByteCount(task.completedLength)
         let totalLength = byteCountFormatter.stringFromByteCount(task.totalLength)
-        detailLabel.stringValue = "\(completeLength) of \(totalLength)"
+        let speed = byteCountFormatter.stringFromByteCount(task.downloadSpeed)
+        detailLabel.stringValue = "\(completeLength) of \(totalLength) at \(speed)/s"
+
+        
+        var path: NSURL?
+        if task.files.count > 0 {
+            if (task.files[0].uris.count > 0) {
+                path = task.files[0].path ?? task.files[0].uris[0].uri
+            } else {
+                path = task.files[0].path
+            }
+        }
+        
+        nameLabel.stringValue = path?.lastPathComponent ?? "Unknown"
+        iconImageView.image = NSWorkspace.sharedWorkspace().iconForFileType(path?.pathExtension ?? "")
     }
     
     func updateTaskNotification(notification: NSNotification) {

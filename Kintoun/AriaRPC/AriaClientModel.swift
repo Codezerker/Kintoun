@@ -32,6 +32,7 @@ public struct AriaClientTask {
         let length: UInt64
         let completeLength: UInt64
         let path: NSURL?
+        let uris: [(status: String, uri: NSURL?)]
         // selected, uris
         
         init(json: JSON) {
@@ -39,6 +40,9 @@ public struct AriaClientTask {
             self.path = NSURL.init(fileURLWithPath: json["path"].stringValue)
             self.length = json["length"].uInt64Value
             self.completeLength = json["completeLength"].uInt64Value
+            self.uris = json["uris"].array?.map({ (uriJSON) -> (String, NSURL?) in
+                return (uriJSON["status"].stringValue, NSURL.init(string: uriJSON["uri"].stringValue))
+            }) ?? []
         }
     }
     
