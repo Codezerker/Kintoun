@@ -103,9 +103,8 @@ extension MainViewController: NSTableViewDelegate, NSTableViewDataSource {
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         
         let cell = tableView.makeViewWithIdentifier("TaskCell", owner: self) as! TaskCell
-        cell.gid = tasks[row].gid
-        cell.updateTask(tasks[row])
-        
+        cell.task = (tasks[row])
+
         return cell
     }
     
