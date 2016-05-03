@@ -98,23 +98,19 @@ extension MainViewController {
 
 // MARK: TableViewDatasource/Delegate -
 extension MainViewController: NSTableViewDelegate, NSTableViewDataSource {
-    
    
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         
         let cell = tableView.makeViewWithIdentifier("TaskCell", owner: self) as! TaskCell
         cell.task = (tasks[row])
-
         return cell
     }
-    
     
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return tasks.count
     }
     
 }
-
 
 
 // MARK: Debug -

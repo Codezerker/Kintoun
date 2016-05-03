@@ -55,11 +55,31 @@ class TaskCell: NSView {
     
     func updateTask(task: AriaClientTask) {
 
+        // update detail info
         let completeLength = byteCountFormatter.stringFromByteCount(task.completedLength)
         let totalLength = byteCountFormatter.stringFromByteCount(task.totalLength)
         let speed = byteCountFormatter.stringFromByteCount(task.downloadSpeed)
-        detailLabel.stringValue = "\(completeLength) of \(totalLength) at \(speed)/s"
 
+        switch task.status {
+        case .Active:
+            detailLabel.stringValue = "\(completeLength) of \(totalLength) at \(speed)/s"
+        case .Waiting:
+            if task.completedLength == 0 {
+                detailLabel.stringValue = "Waiting"
+            } else {
+                detailLabel.stringValue = "\(completeLength) of \(totalLength) Waiting"
+            }
+        case .Paused:
+            detailLabel.stringValue = "\(completeLength) of \(totalLength) Paused"
+        case .Error:
+            detailLabel.stringValue = "Error"
+        case .Complete:
+            detailLabel.stringValue = "\(completeLength) of \(totalLength) Complete"
+        case .Removed:
+            detailLabel.stringValue = "Removed"
+        }
+        
+        // update title, icon
         var path: NSURL?
         if task.files.count > 0 {
             if (task.files[0].uris.count > 0) {
