@@ -36,6 +36,7 @@ public struct AriaClientNotificationKey {
     static let DownloadComplete = "AriaClientDownloadComplete"
 }
 
+
 public enum AriaClientTaskType {
     case Active
     case Waiting
@@ -51,7 +52,7 @@ private struct Request {
     var handleResponse: ((JSON) -> Void)?
     
     init(method: String) {
-        self.id = method + "\(Int(NSDate.init().timeIntervalSince1970))"
+        self.id = method + "\(NSDate.init().timeIntervalSince1970)"
         self.method = method
     }
 }
