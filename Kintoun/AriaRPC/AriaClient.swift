@@ -270,9 +270,9 @@ extension AriaClient {
     /* This method removes the download denoted by gid (string). If the specified download is in progress, it is first stopped. The status of the removed download becomes removed. This method returns GID of removed download.
      */
     public func remove(gid: String, force: Bool = false, completion: Result<String> -> Void) {
-        let request = self.generateRequest(force ? "aria2.forceRemove" : "aria2.remove") { (json) in
+        let request = self.generateRequest(force ? "aria2.forceRemove" : "aria2.remove", params: [gid]) { (json) in
             guard let gid = json["result"].string else {
-                let error = NSError.init(domain: "addUri.ariaClient.Kintoun", json: json["error"])
+                let error = NSError.init(domain: "remove.ariaClient.Kintoun", json: json["error"])
                 completion(.Error(error))
                 return
             }
@@ -286,9 +286,9 @@ extension AriaClient {
     /* This method pauses the download denoted by gid (string). The status of paused download becomes paused. If the download was active, the download is placed in the front of waiting queue. While the status is paused, the download is not started. To change status to waiting, use the aria2.unpause() method. This method returns GID of paused download.
      */
     public func pause(gid: String, force: Bool = false, completion: Result<String> -> Void) {
-        let request = self.generateRequest(force ? "aria2.forcePause" : "aria2.pause") { (json) in
+        let request = self.generateRequest(force ? "aria2.forcePause" : "aria2.pause", params: [gid]) { (json) in
             guard let gid = json["result"].string else {
-                let error = NSError.init(domain: "addUri.ariaClient.Kintoun", json: json["error"])
+                let error = NSError.init(domain: "pause.ariaClient.Kintoun", json: json["error"])
                 completion(.Error(error))
                 return
             }
@@ -304,7 +304,7 @@ extension AriaClient {
     public func pauseAll(force: Bool = false, completion: Result<String> -> Void) {
         let request = self.generateRequest(force ? "aria2.forcePauseAll" : "aria2.pauseAll") { (json) in
             if json["result"].string != "OK"  {
-                let error = NSError.init(domain: "addUri.ariaClient.Kintoun", json: json["error"])
+                let error = NSError.init(domain: "pauseAll.ariaClient.Kintoun", json: json["error"])
                 completion(.Error(error))
                 return
             }
@@ -317,10 +317,10 @@ extension AriaClient {
     
     /* This method changes the status of the download denoted by gid (string) from paused to waiting, making the download eligible to be restarted. This method returns the GID of the unpaused download.
      */
-    func unpause(gid: String, completion: Result<String> -> Void) {
-        let request = self.generateRequest("aria2.unpause") { (json) in
+    public func unpause(gid: String, completion: Result<String> -> Void) {
+        let request = self.generateRequest("aria2.unpause", params: [gid]) { (json) in
             guard let gid = json["result"].string else {
-                let error = NSError.init(domain: "addUri.ariaClient.Kintoun", json: json["error"])
+                let error = NSError.init(domain: "unpause.ariaClient.Kintoun", json: json["error"])
                 completion(.Error(error))
                 return
             }
@@ -333,8 +333,35 @@ extension AriaClient {
     
     /* This method is equal to calling aria2.unpause() for every active/waiting download. This methods returns OK.
      */
-    func unpauseAll(completion: Result<String> -> Void) {
+    public func unpauseAll(completion: Result<String> -> Void) {
         let request = self.generateRequest("aria2.unpauseAll") { (json) in
+            if json["result"].string != "OK"  {
+                let error = NSError.init(domain: "unpauseAll.ariaClient.Kintoun", json: json["error"])
+                completion(.Error(error))
+                return
+            }
+            completion(.Success("OK"))
+        }
+        
+        self.send(request)
+    }
+    
+    
+    /* This method removes a completed/error/removed download denoted by gid from memory. If gid is not assigned, it removes all. This method returns OK for success.
+     */
+    func clearDownloadResult(gid: String? = nil, completion: Result<String> -> Void) {
+        
+        let method: String
+        let params: [AnyObject]?
+        if let gid = gid {
+            method = "aria2.removeDownloadResult"
+            params = [gid]
+        } else {
+            method = "aria2.purgeDownloadResult"
+            params = nil
+        }
+        
+        let request = self.generateRequest(method, params: params) { (json) in
             if json["result"].string != "OK"  {
                 let error = NSError.init(domain: "addUri.ariaClient.Kintoun", json: json["error"])
                 completion(.Error(error))
