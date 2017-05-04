@@ -11,30 +11,26 @@ import Cocoa
 class NewTaskPanel: NSPanel {
 
     enum NewTaskPanelResponse: Int {
-        case Cancel = 0
-        case OK = 1
+        case cancel = 0
+        case ok = 1
     }
    
     
     @IBOutlet weak var urlTextField: NSTextField!
     @IBOutlet var newTaskView: NSView!
     
-    private var window: NSWindow?
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
+    fileprivate var window: NSWindow?
+       
     init() {
         
-        super.init(contentRect: NSMakeRect(0, 0, 420, 80), styleMask: NSTitledWindowMask, backing: .Buffered, defer: false)
+        super.init(contentRect: NSMakeRect(0, 0, 420, 80), styleMask: NSTitledWindowMask, backing: .buffered, defer: false)
         
-        NSBundle.mainBundle().loadNibNamed("NewTaskView", owner: self, topLevelObjects: nil)
+        Bundle.main.loadNibNamed("NewTaskView", owner: self, topLevelObjects: nil)
         
         self.contentView = newTaskView
     }
     
-    func beginSheetModalForWindow(window: NSWindow, completionHandler handler: (NewTaskPanelResponse) -> Void) {
+    func beginSheetModalForWindow(_ window: NSWindow, completionHandler handler: @escaping (NewTaskPanelResponse) -> Void) {
         self.window = window
         
         window.beginSheet(self) { (response) in
@@ -42,12 +38,12 @@ class NewTaskPanel: NSPanel {
         }
     }
     
-    @IBAction func okButtonClicked(sender: AnyObject) {
-        window?.endSheet(self, returnCode: NewTaskPanelResponse.OK.rawValue)
+    @IBAction func okButtonClicked(_ sender: AnyObject) {
+        window?.endSheet(self, returnCode: NewTaskPanelResponse.ok.rawValue)
     }
     
-    @IBAction func cancelButtonClicked(sender: AnyObject) {
-        window?.endSheet(self, returnCode: NewTaskPanelResponse.Cancel.rawValue)
+    @IBAction func cancelButtonClicked(_ sender: AnyObject) {
+        window?.endSheet(self, returnCode: NewTaskPanelResponse.cancel.rawValue)
     }
     
 }

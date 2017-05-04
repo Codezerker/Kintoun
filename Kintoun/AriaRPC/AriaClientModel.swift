@@ -10,8 +10,8 @@ import Foundation
 import SwiftyJSON
 
 public enum Result<T> {
-    case Success(T)
-    case Error(ErrorType)
+    case success(T)
+    case error(Error)
 }
 
 
@@ -31,17 +31,17 @@ public struct AriaClientTask {
         let index: UInt
         let length: UInt64
         let completeLength: UInt64
-        let path: NSURL?
-        let uris: [(status: String, uri: NSURL?)]
+        let path: URL?
+        let uris: [(status: String, uri: URL?)]
         // selected, uris
         
         init(json: JSON) {
             self.index = json["index"].uIntValue
-            self.path = NSURL.init(fileURLWithPath: json["path"].stringValue)
+            self.path = URL.init(fileURLWithPath: json["path"].stringValue)
             self.length = json["length"].uInt64Value
             self.completeLength = json["completeLength"].uInt64Value
-            self.uris = json["uris"].array?.map({ (uriJSON) -> (String, NSURL?) in
-                return (uriJSON["status"].stringValue, NSURL.init(string: uriJSON["uri"].stringValue))
+            self.uris = json["uris"].array?.map({ (uriJSON) -> (String, URL?) in
+                return (uriJSON["status"].stringValue, URL.init(string: uriJSON["uri"].stringValue))
             }) ?? []
         }
     }
@@ -75,8 +75,8 @@ public struct AriaClientTask {
     
     init?(json: JSON) {
         guard let gid = json["gid"].string,
-            statusRaw = json["status"].string,
-               status = TaskStatus.init(rawValue: statusRaw) else {
+            let statusRaw = json["status"].string,
+               let status = TaskStatus.init(rawValue: statusRaw) else {
             return nil
         }
         

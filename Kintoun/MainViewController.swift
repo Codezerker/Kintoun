@@ -12,41 +12,34 @@ class MainViewController: NSViewController {
 
     @IBOutlet weak var taskTableView: NSTableView!
     
-    private var downloadFolderPath = NSURL.fileURLWithPath(NSHomeDirectory() + "/Downloads")
-    private var tasks = [AriaClientTask]()
+    fileprivate var downloadFolderPath = URL(fileURLWithPath: NSHomeDirectory() + "/Downloads")
+    fileprivate var tasks = [AriaClientTask]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // adding notification
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ariaClientConnected), name: AriaClientNotificationKey.Connected, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ariaClientConnected), name: NSNotification.Name(rawValue: AriaClientNotificationKey.Connected), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ariaClientDisconnected), name: AriaClientNotificationKey.Disconnected, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ariaClientDisconnected), name: NSNotification.Name(rawValue: AriaClientNotificationKey.Disconnected), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ariaClientDownloadStart), name: AriaClientNotificationKey.DownloadStart, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(ariaClientDownloadStart), name: NSNotification.Name(rawValue: AriaClientNotificationKey.DownloadStart), object: nil);
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ariaClientDownloadComplete), name: AriaClientNotificationKey.DownloadComplete, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(ariaClientDownloadComplete), name: NSNotification.Name(rawValue: AriaClientNotificationKey.DownloadComplete), object: nil);
        
         ariaManager.setup()
-    }
-
-    override var representedObject: AnyObject? {
-        didSet {
-        // Update the view, if already loaded.
-        }
-    }
+    }  
     
-    
-    @IBAction func createTask(sender: AnyObject) {
+    @IBAction func createTask(_ sender: AnyObject) {
         let newTaskPanel = NewTaskPanel.init()
         newTaskPanel.beginSheetModalForWindow(self.view.window!) { (response) in
-            if response == .OK {
-                let urls = newTaskPanel.urlTextField.stringValue.componentsSeparatedByString(",")
+            if response == .ok {
+                let urls = newTaskPanel.urlTextField.stringValue.components(separatedBy: ",")
                 ariaManager.client.addUri(urls) { (result) in
                     switch result {
-                    case let .Error(error):
+                    case let .error(error):
                         print(error)
-                    case let .Success(value):
+                    case let .success(value):
                         print(value)
                     }
                 }
@@ -62,11 +55,11 @@ extension MainViewController {
     
     func ariaClientConnected() {
         
-        ariaManager.client.subcribe([.Active, .Waiting, .Stopped]) { (result) in
+        ariaManager.client.subcribe([.active, .waiting, .stopped]) { (result) in
             switch result {
-            case let .Error(error):
+            case let .error(error):
                 print(error)
-            case let .Success(tasks):
+            case let .success(tasks):
                 // temp solution
                 if self.tasks.count != tasks.count {
                     self.tasks = tasks
@@ -76,7 +69,7 @@ extension MainViewController {
                     for task in tasks {
                         dict[task.gid] = StructWrapper.init(theValue: task)
                     }
-                    NSNotificationCenter.defaultCenter().postNotificationName("TaskCellUpdateNotification", object: nil, userInfo: dict)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "TaskCellUpdateNotification"), object: nil, userInfo: dict)
                 }
             }
         }
@@ -86,11 +79,11 @@ extension MainViewController {
         // show error
     }
     
-    func ariaClientDownloadStart(notification: NSNotification) {
+    func ariaClientDownloadStart(_ notification: Notification) {
         
     }
     
-    func ariaClientDownloadComplete(notification: NSNotification) {
+    func ariaClientDownloadComplete(_ notification: Notification) {
         
     }
 }
@@ -99,14 +92,14 @@ extension MainViewController {
 // MARK: TableViewDatasource/Delegate -
 extension MainViewController: NSTableViewDelegate, NSTableViewDataSource {
    
-    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         
-        let cell = tableView.makeViewWithIdentifier("TaskCell", owner: self) as! TaskCell
+        let cell = tableView.make(withIdentifier: "TaskCell", owner: self) as! TaskCell
         cell.task = (tasks[row])
         return cell
     }
     
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+    func numberOfRows(in tableView: NSTableView) -> Int {
         return tasks.count
     }
     
@@ -116,12 +109,12 @@ extension MainViewController: NSTableViewDelegate, NSTableViewDataSource {
 // MARK: Debug -
 extension MainViewController {
     
-    @IBAction func prinActiveTasks(sender: AnyObject) {
+    @IBAction func prinActiveTasks(_ sender: AnyObject) {
         ariaManager.client.tellActive({ (result) in
             switch result {
-            case let .Error(error):
+            case let .error(error):
                 print(error)
-            case let .Success(tasks):
+            case let .success(tasks):
                 self.tasks = tasks
                 // TODO: reload tableview
             }

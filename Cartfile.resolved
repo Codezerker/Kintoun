@@ -1,2 +1,2 @@
-github "tidwall/SwiftWebSocket" "2.6.0"
-github "SwiftyJSON/SwiftyJSON" "2.3.3"
+github "SwiftyJSON/SwiftyJSON" "3.1.4"
+github "tidwall/SwiftWebSocket" "2.6.5"

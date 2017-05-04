@@ -11,16 +11,16 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         
         // read from userdefaults
         
     }
 
-    func applicationWillTerminate(aNotification: NSNotification) {
+    func applicationWillTerminate(_ aNotification: Notification) {
         // kill aria2c
-        NSTask.launchedTaskWithLaunchPath("/usr/bin/killall", arguments: ["aria2c"]).waitUntilExit()
+        Process.launchedProcess(launchPath: "/usr/bin/killall", arguments: ["aria2c"]).waitUntilExit()
     }
 
     

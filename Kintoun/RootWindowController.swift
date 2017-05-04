@@ -13,7 +13,7 @@ class RootWindowController: NSWindowController {
     override func windowDidLoad() {
         super.windowDidLoad()
         
-        window?.titleVisibility = .Hidden
+        window?.titleVisibility = .hidden
     }
 
 }

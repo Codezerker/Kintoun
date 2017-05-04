@@ -1,6 +1,6 @@
 //  DictionaryTests.swift
 //
-//  Copyright (c) 2014 Pinglin Tang
+//  Copyright (c) 2014 - 2017 Pinglin Tang
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@ import SwiftyJSON
 class DictionaryTests: XCTestCase {
 
     func testGetter() {
-        let dictionary = ["number":9823.212, "name":"NAME", "list":[1234, 4.212], "object":["sub_number":877.2323, "sub_name":"sub_name"], "bool":true]
+        let dictionary = ["number":9823.212, "name":"NAME", "list":[1234, 4.212], "object":["sub_number":877.2323, "sub_name":"sub_name"], "bool":true] as [String : Any]
         let json = JSON(dictionary)
         //dictionary
         XCTAssertEqual((json.dictionary!["number"]! as JSON).double!, 9823.212)

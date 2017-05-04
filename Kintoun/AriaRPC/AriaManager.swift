@@ -20,12 +20,12 @@ struct AriaServer {
 }
 
 
-public class AriaManager: NSObject {
+open class AriaManager: NSObject {
     
     var client: AriaClient!
-    var serverTask: NSTask!
+    var serverTask: Process!
     
-    public func setup() {
+    open func setup() {
         
         //TODO: read from userdefualts or pass in
         let server = AriaServer.init(address: "ws://127.0.0.1",
@@ -35,8 +35,8 @@ public class AriaManager: NSObject {
         
         if !server.isRemote {
             // start local server
-            let path = NSBundle.mainBundle().pathForResource("aria2c", ofType: nil);
-            serverTask = NSTask.init()
+            let path = Bundle.main.path(forResource: "aria2c", ofType: nil);
+            serverTask = Process.init()
             serverTask.launchPath = path
             serverTask.arguments = ["--enable-rpc", "--rpc-listen-all"]
             serverTask.launch()

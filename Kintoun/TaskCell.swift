@@ -18,47 +18,47 @@ class TaskCell: NSView {
         didSet {
             if let task = task {
                 updateTask(task)
-                setNeedsDisplayInRect(self.bounds)
+                setNeedsDisplay(self.bounds)
             }
         }
     }
     
-    private lazy var byteCountFormatter: NSByteCountFormatter = {
-        var formatter = NSByteCountFormatter.init()
-        formatter.countStyle = .File
+    fileprivate lazy var byteCountFormatter: ByteCountFormatter = {
+        var formatter = ByteCountFormatter.init()
+        formatter.countStyle = .file
         return formatter
     }()
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateTaskNotification), name: "TaskCellUpdateNotification", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTaskNotification), name: NSNotification.Name(rawValue: "TaskCellUpdateNotification"), object: nil)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
-    override func drawRect(dirtyRect: NSRect) {
-        super.drawRect(dirtyRect)
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
 
         // set progress bar color
         NSColor.init(red: 220.0/255, green: 245.0/255, blue: 1.0, alpha: 1.0).setFill()
         
         // draw progress bar
         var progressBarFrame = NSMakeRect(0, 0, 0, NSHeight(self.bounds))
-        if let task = task where task.totalLength != 0 {
+        if let task = task, task.totalLength != 0 {
             progressBarFrame.size.width = CGFloat(Double(task.completedLength)/Double(task.totalLength) * Double(NSWidth(self.frame)))
         }
         NSRectFill(progressBarFrame)
     }
     
-    func updateTask(task: AriaClientTask) {
+    func updateTask(_ task: AriaClientTask) {
 
         // update detail info
-        let completeLength = byteCountFormatter.stringFromByteCount(task.completedLength)
-        let totalLength = byteCountFormatter.stringFromByteCount(task.totalLength)
-        let speed = byteCountFormatter.stringFromByteCount(task.downloadSpeed)
+        let completeLength = byteCountFormatter.string(fromByteCount: task.completedLength)
+        let totalLength = byteCountFormatter.string(fromByteCount: task.totalLength)
+        let speed = byteCountFormatter.string(fromByteCount: task.downloadSpeed)
 
         switch task.status {
         case .Active:
@@ -80,7 +80,7 @@ class TaskCell: NSView {
         }
         
         // update title, icon
-        var path: NSURL?
+        var path: URL?
         if task.files.count > 0 {
             if (task.files[0].uris.count > 0) {
                 path = task.files[0].path ?? task.files[0].uris[0].uri
@@ -90,11 +90,11 @@ class TaskCell: NSView {
         }
         
         nameLabel.stringValue = path?.lastPathComponent ?? "Unknown"
-        iconImageView.image = NSWorkspace.sharedWorkspace().iconForFileType(path?.pathExtension ?? "")
+        iconImageView.image = NSWorkspace.shared().icon(forFileType: path?.pathExtension ?? "")
     }
     
-    func updateTaskNotification(notification: NSNotification) {
-        guard let gid = self.task?.gid, userInfo = notification.userInfo, task = userInfo[gid] as? StructWrapper<AriaClientTask> else {
+    func updateTaskNotification(_ notification: Notification) {
+        guard let gid = self.task?.gid, let userInfo = notification.userInfo, let task = userInfo[gid] as? StructWrapper<AriaClientTask> else {
             return
         }
         

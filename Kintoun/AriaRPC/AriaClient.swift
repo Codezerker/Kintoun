@@ -38,45 +38,45 @@ public struct AriaClientNotificationKey {
 
 
 public enum AriaClientTaskType {
-    case Active
-    case Waiting
-    case Stopped
+    case active
+    case waiting
+    case stopped
 }
 
 
 private struct Request {
     var id: String
     var method: String
-    var params: [AnyObject]?
+    var params: [Any]?
     var option: AriaClientOption?
     var handleResponse: ((JSON) -> Void)?
     
     init(method: String) {
-        self.id = method + "\(NSDate.init().timeIntervalSince1970)"
+        self.id = method + "\(Date.init().timeIntervalSince1970)"
         self.method = method
     }
 }
 
 
-public class AriaClient: NSObject {
+open class AriaClient: NSObject {
     
-    private var url: String?
-    private var websocket: WebSocket?
-    private var requestDict = [String: Request]()
-    private var secret: String?
-    private var globalOptions = [String: AnyObject]()
+    fileprivate var url: String?
+    fileprivate var websocket: WebSocket?
+    fileprivate var requestDict = [String: Request]()
+    fileprivate var secret: String?
+    fileprivate var globalOptions = [String: AnyObject]()
     
-    public var globalStat = GlobalStat.init()
+    open var globalStat = GlobalStat.init()
     
     public init(_ url: String) {
         self.url = url
         
         // defualt settings
-        globalOptions[AriaClientOption.dir] = NSHomeDirectory() +  "/Downloads/"
+        globalOptions[AriaClientOption.dir] = NSHomeDirectory() +  "/Downloads/" as AnyObject
     }
     
     
-    public func connect() {
+    open func connect() {
         
         guard let url = url else {
             return
@@ -84,12 +84,12 @@ public class AriaClient: NSObject {
         
         self.websocket = WebSocket.init(url)
         self.websocket?.event.open = {
-            NSNotificationCenter.defaultCenter().postNotificationName(AriaClientNotificationKey.Connected, object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: AriaClientNotificationKey.Connected), object: nil)
             print("Open...")
         }
         
         self.websocket?.event.close = {code, reason, wasClean in
-            NSNotificationCenter.defaultCenter().postNotificationName(AriaClientNotificationKey.Disconnected, object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: AriaClientNotificationKey.Disconnected), object: nil)
             print("Close...")
         }
         
@@ -108,32 +108,32 @@ public class AriaClient: NSObject {
                 switch method {
                 case "aria2.onDownloadStart":
                     let params = json["params"].array?.first?.dictionaryObject
-                    NSNotificationCenter.defaultCenter().postNotificationName(AriaClientNotificationKey.DownloadStart, object: nil, userInfo: params)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: AriaClientNotificationKey.DownloadStart), object: nil, userInfo: params)
                     return
                 case "aria2.onDownloadComplete":
                     let params = json["params"].array?.first?.dictionaryObject
-                    NSNotificationCenter.defaultCenter().postNotificationName(AriaClientNotificationKey.DownloadComplete, object: nil, userInfo: params)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: AriaClientNotificationKey.DownloadComplete), object: nil, userInfo: params)
                     return
                 default:
                     break
                 }
             }
             
-            guard let id = json["id"].string, request = self.requestDict[id]  else {
+            guard let id = json["id"].string, let request = self.requestDict[id]  else {
                 print("No Related Reuqest found for this message")
                 return
             }
             
             request.handleResponse?(json)
-            self.requestDict.removeValueForKey(id)
+            self.requestDict.removeValue(forKey: id)
         }
     }
     
     
-    private func generateRequest(method: String,
-                                 params: [AnyObject]? = nil,
+    fileprivate func generateRequest(_ method: String,
+                                 params: [Any]? = nil,
                                  option: AriaClientOption? = nil,
-                                 handleResponse: (JSON) -> Void) -> Request {
+                                 handleResponse: @escaping (JSON) -> Void) -> Request {
         var request = Request.init(method: method)
         request.params = params
         request.option = option
@@ -141,19 +141,19 @@ public class AriaClient: NSObject {
         return request
     }
     
-    private func send(request: Request) {
+    fileprivate func send(_ request: Request) {
         guard let websocket = self.websocket else {
             return
         }
         
-        var jsonDict: [String: AnyObject] = ["jsonrpc": "2.0", "method": request.method, "id": request.id]
+        var jsonDict: [String: AnyObject] = ["jsonrpc": "2.0" as AnyObject, "method": request.method as AnyObject, "id": request.id as AnyObject]
         if let params = request.params {
             // add secret key
             //            if let secret = client.secret {
             //                jsonDict["secret"] = secret
             //            }
             
-            jsonDict["params"] = params
+            jsonDict["params"] = params as AnyObject
         }
         
         let jsonString = "\(JSON(jsonDict))"
@@ -166,15 +166,15 @@ public class AriaClient: NSObject {
     }
 
     
-    public func subcribe(types: [AriaClientTaskType], callback: Result<Array<AriaClientTask>> -> Void) {
+    open func subcribe(_ types: [AriaClientTaskType], callback: @escaping (Result<Array<AriaClientTask>>) -> Void) {
 
         func getTasks() {
             // TODO: change to multi call
             tellActive { (result) in
                 callback(result)
-                dispatch_async(dispatch_get_global_queue(0, 0), {
+                DispatchQueue.global().async(execute: {
                     sleep(1)
-                    dispatch_async(dispatch_get_main_queue(), { 
+                    DispatchQueue.main.async(execute: { 
                         getTasks()
                     })
                 })
@@ -189,14 +189,14 @@ public class AriaClient: NSObject {
 // Aria2 methods
 extension AriaClient {
     
-    public func getGlobalStat(completion: Result<GlobalStat> -> Void) {
+    public func getGlobalStat(_ completion: @escaping (Result<GlobalStat>) -> Void) {
         let request = self.generateRequest("aria2.getGlobalStatd") { (json) in
-            if json["result"] == nil {
+            if json["result"] == JSON.null {
                 let error = NSError.init(domain: "getGlobalStat.ariaClient.Kintoun", json: json["error"])
-                completion(.Error(error))
+                completion(.error(error))
             } else {
                 let stat = GlobalStat.init(json["result"])
-                completion(.Success(stat))
+                completion(.success(stat))
             }
         }
         
@@ -204,11 +204,11 @@ extension AriaClient {
     }
     
     
-    public func tellActive(completion: Result<Array<AriaClientTask>> -> Void) {
+    public func tellActive(_ completion: @escaping (Result<Array<AriaClientTask>>) -> Void) {
         let request = self.generateRequest("aria2.tellActive") { (json) in
             guard let array = json["result"].array else {
                 let error = NSError.init(domain: "getGlobalStat.ariaClient.Kintoun", json: json["error"])
-                completion(.Error(error))
+                completion(.error(error))
                 return
             }
 
@@ -217,12 +217,12 @@ extension AriaClient {
                 if let task = AriaClientTask.init(json: taskJSON) {
                     tasks.append(task)
                 } else {
-                    let error = NSError.init(domain: "getGlobalStat.ariaClient.Kintoun", json: nil)
-                    completion(.Error(error))
+                    let error = NSError.init(domain: "getGlobalStat.ariaClient.Kintoun", json: JSON.null)
+                    completion(.error(error))
                     return
                 }
             }
-            completion(.Success(tasks))
+            completion(.success(tasks))
         }
         
         self.send(request)
@@ -231,7 +231,7 @@ extension AriaClient {
     
     public func getGlobalSettings() {
         let request = self.generateRequest("aria2.getGlobalOption") { (json) in
-            if json["result"] == nil {
+            if json["result"] == JSON.null {
                 print(json["error"])
                 // TODO: return error
             } else {
@@ -245,7 +245,7 @@ extension AriaClient {
     
     /* This method adds a new download. uris is an array of HTTP/FTP/SFTP/BitTorrent URIs (strings) pointing to the same resource. It returns the GID of the newly registered download.
      */
-    public func addUri(uris: [String], options:[String: AnyObject]? = nil, completion: Result<String> -> Void) {
+    public func addUri(_ uris: [String], options:[String: AnyObject]? = nil, completion: @escaping (Result<String>) -> Void) {
         // merge global options
         var combinedOptions = globalOptions
         if let options = options {
@@ -257,10 +257,10 @@ extension AriaClient {
         let request = self.generateRequest("aria2.addUri", params: [uris, combinedOptions]) { (json) in
             guard let gid = json["result"].string else {
                 let error = NSError.init(domain: "addUri.ariaClient.Kintoun", json: json["error"])
-                completion(.Error(error))
+                completion(.error(error))
                 return
             }
-            completion(.Success(gid))
+            completion(.success(gid))
         }
         
         self.send(request)
@@ -269,14 +269,14 @@ extension AriaClient {
     
     /* This method removes the download denoted by gid (string). If the specified download is in progress, it is first stopped. The status of the removed download becomes removed. This method returns GID of removed download.
      */
-    public func remove(gid: String, force: Bool = false, completion: Result<String> -> Void) {
+    public func remove(_ gid: String, force: Bool = false, completion: @escaping (Result<String>) -> Void) {
         let request = self.generateRequest(force ? "aria2.forceRemove" : "aria2.remove", params: [gid]) { (json) in
             guard let gid = json["result"].string else {
                 let error = NSError.init(domain: "remove.ariaClient.Kintoun", json: json["error"])
-                completion(.Error(error))
+                completion(.error(error))
                 return
             }
-            completion(.Success(gid))
+            completion(.success(gid))
         }
         
         self.send(request)
@@ -285,14 +285,14 @@ extension AriaClient {
     
     /* This method pauses the download denoted by gid (string). The status of paused download becomes paused. If the download was active, the download is placed in the front of waiting queue. While the status is paused, the download is not started. To change status to waiting, use the aria2.unpause() method. This method returns GID of paused download.
      */
-    public func pause(gid: String, force: Bool = false, completion: Result<String> -> Void) {
+    public func pause(_ gid: String, force: Bool = false, completion: @escaping (Result<String>) -> Void) {
         let request = self.generateRequest(force ? "aria2.forcePause" : "aria2.pause", params: [gid]) { (json) in
             guard let gid = json["result"].string else {
                 let error = NSError.init(domain: "pause.ariaClient.Kintoun", json: json["error"])
-                completion(.Error(error))
+                completion(.error(error))
                 return
             }
-            completion(.Success(gid))
+            completion(.success(gid))
         }
         
         self.send(request)
@@ -301,14 +301,14 @@ extension AriaClient {
     
     /* This method is equal to calling aria2.pause() for every active/waiting download. This methods returns OK.
      */
-    public func pauseAll(force: Bool = false, completion: Result<String> -> Void) {
+    public func pauseAll(_ force: Bool = false, completion: @escaping (Result<String>) -> Void) {
         let request = self.generateRequest(force ? "aria2.forcePauseAll" : "aria2.pauseAll") { (json) in
             if json["result"].string != "OK"  {
                 let error = NSError.init(domain: "pauseAll.ariaClient.Kintoun", json: json["error"])
-                completion(.Error(error))
+                completion(.error(error))
                 return
             }
-            completion(.Success("OK"))
+            completion(.success("OK"))
         }
         
         self.send(request)
@@ -317,14 +317,14 @@ extension AriaClient {
     
     /* This method changes the status of the download denoted by gid (string) from paused to waiting, making the download eligible to be restarted. This method returns the GID of the unpaused download.
      */
-    public func unpause(gid: String, completion: Result<String> -> Void) {
+    public func unpause(_ gid: String, completion: @escaping (Result<String>) -> Void) {
         let request = self.generateRequest("aria2.unpause", params: [gid]) { (json) in
             guard let gid = json["result"].string else {
                 let error = NSError.init(domain: "unpause.ariaClient.Kintoun", json: json["error"])
-                completion(.Error(error))
+                completion(.error(error))
                 return
             }
-            completion(.Success(gid))
+            completion(.success(gid))
         }
         
         self.send(request)
@@ -333,14 +333,14 @@ extension AriaClient {
     
     /* This method is equal to calling aria2.unpause() for every active/waiting download. This methods returns OK.
      */
-    public func unpauseAll(completion: Result<String> -> Void) {
+    public func unpauseAll(_ completion: @escaping (Result<String>) -> Void) {
         let request = self.generateRequest("aria2.unpauseAll") { (json) in
             if json["result"].string != "OK"  {
                 let error = NSError.init(domain: "unpauseAll.ariaClient.Kintoun", json: json["error"])
-                completion(.Error(error))
+                completion(.error(error))
                 return
             }
-            completion(.Success("OK"))
+            completion(.success("OK"))
         }
         
         self.send(request)
@@ -349,13 +349,13 @@ extension AriaClient {
     
     /* This method removes a completed/error/removed download denoted by gid from memory. If gid is not assigned, it removes all. This method returns OK for success.
      */
-    func clearDownloadResult(gid: String? = nil, completion: Result<String> -> Void) {
+    func clearDownloadResult(_ gid: String? = nil, completion: @escaping (Result<String>) -> Void) {
         
         let method: String
         let params: [AnyObject]?
         if let gid = gid {
             method = "aria2.removeDownloadResult"
-            params = [gid]
+            params = [gid as AnyObject]
         } else {
             method = "aria2.purgeDownloadResult"
             params = nil
@@ -364,10 +364,10 @@ extension AriaClient {
         let request = self.generateRequest(method, params: params) { (json) in
             if json["result"].string != "OK"  {
                 let error = NSError.init(domain: "addUri.ariaClient.Kintoun", json: json["error"])
-                completion(.Error(error))
+                completion(.error(error))
                 return
             }
-            completion(.Success("OK"))
+            completion(.success("OK"))
         }
         
         self.send(request)
@@ -376,7 +376,7 @@ extension AriaClient {
 
 
 extension NSError {
-    private convenience init(domain: String, json: JSON) {
+    fileprivate convenience init(domain: String, json: JSON) {
         let code = json["code"].int ?? 0
         self.init(domain: "client.aria.kintoun", code: code, userInfo: json.dictionaryObject)
     }
