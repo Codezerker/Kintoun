@@ -64,7 +64,7 @@ open class AriaClient: NSObject {
     fileprivate var websocket: WebSocket?
     fileprivate var requestDict = [String: Request]()
     fileprivate var secret: String?
-    fileprivate var globalOptions = [String: AnyObject]()
+    fileprivate var globalOptions = [String: String]()
     
     open var globalStat = GlobalStat.init()
     
@@ -72,7 +72,7 @@ open class AriaClient: NSObject {
         self.url = url
         
         // defualt settings
-        globalOptions[AriaClientOption.dir] = NSHomeDirectory() +  "/Downloads/" as AnyObject
+        globalOptions[AriaClientOption.dir] = NSHomeDirectory() +  "/Downloads/"
     }
     
     
@@ -245,7 +245,7 @@ extension AriaClient {
     
     /* This method adds a new download. uris is an array of HTTP/FTP/SFTP/BitTorrent URIs (strings) pointing to the same resource. It returns the GID of the newly registered download.
      */
-    public func addUri(_ uris: [String], options:[String: AnyObject]? = nil, completion: @escaping (Result<String>) -> Void) {
+    public func addUri(_ uris: [String], options:[String: String]? = nil, completion: @escaping (Result<String>) -> Void) {
         // merge global options
         var combinedOptions = globalOptions
         if let options = options {

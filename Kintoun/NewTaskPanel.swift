@@ -23,7 +23,7 @@ class NewTaskPanel: NSPanel {
        
     init() {
         
-        super.init(contentRect: NSMakeRect(0, 0, 420, 80), styleMask: NSTitledWindowMask, backing: .buffered, defer: false)
+        super.init(contentRect: NSMakeRect(0, 0, 420, 110), styleMask: NSTitledWindowMask, backing: .buffered, defer: false)
         
         Bundle.main.loadNibNamed("NewTaskView", owner: self, topLevelObjects: nil)
         
